@@ -315,7 +315,7 @@
   @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
   .mascot-btn:hover{filter:brightness(1.05);}
 
-  /* น้อง Agru แอนิเมชัน: ตากะพริบ ใบไม้ไหว แขนโบก แก้มเปล่งแสง */
+  /* น้อง Agri แอนิเมชัน: ตากะพริบ ใบไม้ไหว แขนโบก แก้มเปล่งแสง */
   .radish-mascot .radish-eyes{transform-origin:32px 28px;animation:radishBlink 4.2s infinite;}
   @keyframes radishBlink{0%,90%,100%{transform:scaleY(1);}93%,96%{transform:scaleY(.12);}}
   .radish-mascot .radish-leaves{transform-origin:32px 14px;animation:radishLeafSway 2.8s ease-in-out infinite;}
@@ -526,7 +526,7 @@ let state = {
   activePlant: null,
   chatOpen: false,
   chatLog: [
-    {role:'bot', text:'สวัสดีค่ะ! หนูชื่อ น้อง Agru 🌱 ผู้ช่วย AI ด้านการเกษตร มีอะไรให้หนูช่วยแนะนำเรื่องพืช โรคพืช หรือการดูแลสวนไหมคะ?'}
+    {role:'bot', text:'สวัสดีค่ะ! หนูชื่อ น้อง Agri 🌱 ผู้ช่วย AI ด้านการเกษตร มีอะไรให้หนูช่วยแนะนำเรื่องพืช โรคพืช หรือการดูแลสวนไหมคะ?'}
   ],
   chatBusy:false,
   scanImage:null,       // {dataUrl, base64, mediaType}
@@ -718,7 +718,7 @@ function renderLanding(root){
       <div>
         <span class="eyebrow">สมุดบันทึกเกษตรกรดิจิทัล</span>
         <h1>ปลูกอะไรก็<em>เข้าใจง่าย</em><br>ดูแลได้อย่างมั่นใจ</h1>
-        <p>Agriculture is easy คือแหล่งรวมข้อมูลพันธุ์พืช วิธีการดูแลรักษา และอาการของโรคต่างๆ พร้อมผู้ช่วย AI "น้อง Agru" และระบบถ่ายภาพวิเคราะห์ต้นพืชแบบทันที</p>
+        <p>Agriculture is easy คือแหล่งรวมข้อมูลพันธุ์พืช วิธีการดูแลรักษา และอาการของโรคต่างๆ พร้อมผู้ช่วย AI "น้อง Agri" และระบบถ่ายภาพวิเคราะห์ต้นพืชแบบทันที</p>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="goto('register')">เริ่มต้นใช้งานฟรี</button>
           <button class="btn btn-ghost" onclick="goto('login')">มีบัญชีอยู่แล้ว</button>
@@ -726,7 +726,7 @@ function renderLanding(root){
       </div>
       <div class="hero-card">
         <div class="ring-badge"><div class="ring-badge-inner">${radishSvg(34)}</div></div>
-        <h3 style="margin:0 0 6px;">น้อง Agru</h3>
+        <h3 style="margin:0 0 6px;">น้อง Agri</h3>
         <p style="margin:0 0 14px;color:var(--ink-soft);font-size:.9rem;line-height:1.6;">มาสคอตหัวไชเท้า AI ประจำเว็บไซต์ พร้อมตอบคำถามด้วยเสียงพูดและให้คำแนะนำเรื่องพืชผลตลอด 24 ชั่วโมง</p>
         <div class="mono" style="font-size:.75rem;color:var(--leaf-2);">● พร้อมให้บริการ</div>
       </div>
@@ -745,7 +745,7 @@ function renderLanding(root){
           <div class="plant-body"><p>ถ่ายภาพต้นพืชแล้วให้ AI ช่วยระบุชนิดและวิเคราะห์อาการเบื้องต้น</p></div>
         </div>
         <div class="plant-card" style="cursor:default;">
-          <div class="plant-top"><span class="plant-code">FEATURE / 03</span><div class="plant-emoji">💬</div><div class="plant-name">น้อง Agru ผู้ช่วย AI</div></div>
+          <div class="plant-top"><span class="plant-code">FEATURE / 03</span><div class="plant-emoji">💬</div><div class="plant-name">น้อง Agri ผู้ช่วย AI</div></div>
           <div class="plant-body"><p>ถามตอบเรื่องการเกษตรกับมาสคอต AI ได้ทุกที่ทุกเวลาในเว็บไซต์</p></div>
         </div>
       </div>
@@ -766,7 +766,7 @@ function leafSvg(size){
   </svg>`;
 }
 function radishSvg(size){
-  // น้อง Agru: มาสคอตหัวไชเท้าสีขาว หน้ายิ้ม แก้มชมพู ใบเขียวบนหัว — คลาสต่างๆ ใช้สำหรับแอนิเมชันใน CSS
+  // น้อง Agri: มาสคอตหัวไชเท้าสีขาว หน้ายิ้ม แก้มชมพู ใบเขียวบนหัว — คลาสต่างๆ ใช้สำหรับแอนิเมชันใน CSS
   return `<svg class="radish-mascot" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" aria-hidden="true">
     <ellipse cx="32" cy="58" rx="5" ry="3" fill="#000" opacity=".08"/>
     <g class="radish-leaves">
@@ -932,7 +932,7 @@ function renderLibraryTab(main){
       <div class="chip-filter" style="margin-bottom:16px;">
         ${CATS.map(c=>`<button class="chip ${state.libCat===c?'active':''}" onclick="setLibCat('${c}')">${c}</button>`).join('')}
       </div>
-      <p style="font-size:.82rem;color:var(--ink-soft);margin:0 0 24px;">คลังพืชในเว็บไซต์มีข้อมูลเบื้องต้นของพืชยอดนิยม ถ้าค้นหาแล้วไม่พบ กดปุ่ม <b>"ถาม AI"</b> เพื่อให้น้อง Agru ช่วยค้นข้อมูลพืชชนิดนั้นให้ทันที</p>
+      <p style="font-size:.82rem;color:var(--ink-soft);margin:0 0 24px;">คลังพืชในเว็บไซต์มีข้อมูลเบื้องต้นของพืชยอดนิยม ถ้าค้นหาแล้วไม่พบ กดปุ่ม <b>"ถาม AI"</b> เพื่อให้น้อง Agri ช่วยค้นข้อมูลพืชชนิดนั้นให้ทันที</p>
       ${state.aiSearchError? `<div class="form-msg err" style="margin-bottom:18px;">${esc(state.aiSearchError)}</div>` : ''}
       <div class="plant-grid">
         ${filtered.length? filtered.map(plantCardHtml).join('')
@@ -1515,7 +1515,7 @@ function renderScanTab(main){
         <div class="result-card">
           ${state.scanBusy ? `
             <div class="rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
-            <p style="text-align:center;color:var(--ink-soft);font-size:.88rem;">น้อง Agru กำลังตรวจดูภาพของคุณ...</p>
+            <p style="text-align:center;color:var(--ink-soft);font-size:.88rem;">น้อง Agri กำลังตรวจดูภาพของคุณ...</p>
           ` : state.scanError ? `
             <div class="result-empty">${esc(state.scanError)}</div>
           ` : state.scanResult ? renderScanResultHtml(state.scanResult) : `
@@ -1543,7 +1543,7 @@ function renderScanResultHtml(r){
 function renderMascot(){
   const btn = document.createElement('button');
   btn.className='mascot-btn';
-  btn.title='คุยกับน้อง Agru';
+  btn.title='คุยกับน้อง Agri';
   btn.innerHTML=radishSvg(38);
   btn.onclick=toggleChat;
   document.body.appendChild(btn);
@@ -1554,16 +1554,16 @@ function renderMascot(){
     panel.innerHTML = `
       <div class="chat-head">
         ${radishSvg(32)}
-        <div><div class="name">น้อง Agru</div><div class="role">ผู้ช่วย AI ด้านการเกษตร</div></div>
+        <div><div class="name">น้อง Agri</div><div class="role">ผู้ช่วย AI ด้านการเกษตร</div></div>
         <button class="chat-close" title="${state.voiceEnabled?'ปิดเสียง':'เปิดเสียง'}" style="background:none;border:none;color:var(--paper);font-size:1.05rem;margin-left:auto;margin-right:4px;" onclick="toggleVoice()">${state.voiceEnabled?'🔊':'🔇'}</button>
         <button class="chat-close" style="margin-left:0;" onclick="toggleChat()">✕</button>
       </div>
       <div class="chat-body" id="chat-body">
         ${state.chatLog.map(m=>`<div class="msg ${m.role}">${esc(m.text)}</div>`).join('')}
-        ${state.chatBusy? `<div class="msg bot typing">น้อง Agru กำลังพิมพ์...</div>`:''}
+        ${state.chatBusy? `<div class="msg bot typing">น้อง Agri กำลังพิมพ์...</div>`:''}
       </div>
       <div class="chat-input-row">
-        <input id="chat-input" type="text" placeholder="ถามน้อง Agru เกี่ยวกับพืชของคุณ..." onkeydown="if(event.key==='Enter')sendChat();">
+        <input id="chat-input" type="text" placeholder="ถามน้อง Agri เกี่ยวกับพืชของคุณ..." onkeydown="if(event.key==='Enter')sendChat();">
         <button class="chat-send" onclick="sendChat()">➤</button>
       </div>
     `;
@@ -1741,13 +1741,13 @@ async function sendChat(){
   state.chatBusy=true;
   render();
   try{
-    const system = "คุณคือ 'น้อง Agru' มาสคอต AI ผู้ช่วยของเว็บไซต์ 'Agriculture is easy' บุคลิกเป็นมิตร ร่าเริง ให้กำลังใจเกษตรกร ตอบเป็นภาษาไทยเสมอ เน้นตอบเรื่องการเกษตร พันธุ์พืช การดูแลรักษา และโรคพืชเท่านั้น ตอบกระชับ อ่านง่าย ไม่เกิน 5-6 ประโยค ใช้คำลงท้ายสุภาพเช่น 'ค่ะ' และอาจแทรกอิโมจิที่เกี่ยวกับพืชเล็กน้อยได้";
+    const system = "คุณคือ 'น้อง Agri' มาสคอต AI ผู้ช่วยของเว็บไซต์ 'Agriculture is easy' บุคลิกเป็นมิตร ร่าเริง ให้กำลังใจเกษตรกร ตอบเป็นภาษาไทยเสมอ เน้นตอบเรื่องการเกษตร พันธุ์พืช การดูแลรักษา และโรคพืชเท่านั้น ตอบกระชับ อ่านง่าย ไม่เกิน 5-6 ประโยค ใช้คำลงท้ายสุภาพเช่น 'ค่ะ' และอาจแทรกอิโมจิที่เกี่ยวกับพืชเล็กน้อยได้";
     const history = state.chatLog.slice(-8).map(m=>({role: m.role==='user'?'user':'assistant', content:m.text}));
     const reply = await callClaude(history, system, 500);
-    state.chatLog.push({role:'bot', text: reply || 'ขออภัยค่ะ น้อง Agru ตอบไม่ได้ในตอนนี้ ลองใหม่อีกครั้งนะคะ'});
+    state.chatLog.push({role:'bot', text: reply || 'ขออภัยค่ะ น้อง Agri ตอบไม่ได้ในตอนนี้ ลองใหม่อีกครั้งนะคะ'});
   }catch(e){
     console.error(e);
-    state.chatLog.push({role:'bot', text:'ขออภัยค่ะ ตอนนี้น้อง Agru เชื่อมต่อไม่ได้ ลองใหม่อีกครั้งนะคะ 🌱'});
+    state.chatLog.push({role:'bot', text:'ขออภัยค่ะ ตอนนี้น้อง Agri เชื่อมต่อไม่ได้ ลองใหม่อีกครั้งนะคะ 🌱'});
   }
   state.chatBusy=false;
   input && (input.value='');
