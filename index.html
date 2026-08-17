@@ -270,6 +270,25 @@
   .plot-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   @media (max-width:480px){.plot-form-row{grid-template-columns:1fr;}}
 
+  /* ---------- marketplace ---------- */
+  .market-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+  .market-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;}
+  .market-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .market-card-head h3{margin:0;font-size:1.1rem;}
+  .market-price{font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--leaf-2);font-size:1.05rem;white-space:nowrap;}
+  .market-meta{font-size:.83rem;color:var(--ink-soft);line-height:1.6;margin:0;}
+  .market-meta b{color:var(--ink);}
+  .market-desc{font-size:.85rem;color:var(--ink-soft);background:var(--paper-2);border-radius:8px;padding:8px 10px;margin:2px 0;}
+  .market-loc{display:flex;align-items:center;gap:5px;font-size:.8rem;color:var(--soil);font-weight:600;}
+  .market-actions{display:flex;gap:8px;margin-top:6px;}
+  .market-actions a, .market-actions button{
+    flex:1;font-size:.85rem;padding:9px 10px;border-radius:8px;border:1px solid var(--line);
+    background:#fff;font-weight:700;text-align:center;text-decoration:none;color:var(--ink);
+  }
+  .market-actions a.call{background:var(--leaf);border-color:var(--leaf);color:#fff;}
+  .market-actions button.danger{color:var(--rust);border-color:#e6c3b5;}
+  .market-owner{font-size:.72rem;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+
   /* ---------- scan section ---------- */
   .scan-shell{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
   @media (max-width:820px){.scan-shell{grid-template-columns:1fr;}}
@@ -555,6 +574,12 @@ let state = {
   photosError:null,
   photoUploading:false,
   photoError:null,
+  market:[],
+  marketLoading:false,
+  marketError:null,
+  marketFormOpen:false,
+  marketSaving:false,
+  marketSearch:'',
 };
 
 const AI_PLANT_CACHE = {}; // code -> plant object, for AI-generated lookups not in the static library
@@ -847,6 +872,7 @@ function renderApp(root){
       ${nav('home','หน้าแรก')}
       ${nav('library','คลังพันธุ์พืช')}
       ${nav('plots','จัดการแปลง')}
+      ${nav('market','ตลาดซื้อขาย')}
       ${nav('scan','สแกนต้นพืช')}
     </nav>
     <div class="user-chip">
@@ -863,11 +889,13 @@ function renderApp(root){
   if(state.tab==='library') renderLibraryTab(main);
   if(state.tab==='scan') renderScanTab(main);
   if(state.tab==='plots') renderPlotsTab(main);
+  if(state.tab==='market') renderMarketTab(main);
 
   renderMascot();
   if(state.activePlant) renderPlantModal();
   if(state.plotFormOpen) renderPlotFormModal();
   if(state.plotDetailId) renderPlotDetailModal();
+  if(state.marketFormOpen) renderMarketFormModal();
 }
 
 function renderHomeTab(main){
@@ -1496,6 +1524,128 @@ function renderPlotDetailModal(){
   }
 }
 
+/* ================= ตลาดซื้อขายผลผลิต ================= */
+async function loadMarket(){
+  state.marketLoading=true; state.marketError=null; render();
+  try{
+    const result = await sheetRequest({ action:'listMarket' });
+    if(!result.success){ state.marketError = result.message||'โหลดข้อมูลตลาดไม่สำเร็จ'; }
+    else state.market = (result.listings||[]).sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  }catch(e){
+    console.error(e);
+    state.marketError = 'เชื่อมต่อ Google Sheet ไม่สำเร็จ: '+(e&&e.message?e.message:e);
+  }
+  state.marketLoading=false;
+  render();
+}
+
+function renderMarketTab(main){
+  const term = state.marketSearch.trim().toLowerCase();
+  const filtered = state.market.filter(l => !term || (l.cropName||'').toLowerCase().includes(term) || (l.location||'').toLowerCase().includes(term));
+  main.innerHTML = `
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>ตลาดซื้อขายผลผลิต</h2><span class="count mono">${filtered.length} รายการ</span></div>
+      <p style="font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;">พื้นที่ประกาศซื้อขายผลผลิตทางการเกษตรระหว่างเกษตรกร พร้อมที่ตั้งฟาร์มและเบอร์ติดต่อ เพื่อให้ติดต่อซื้อขายกันได้สะดวก</p>
+      <div class="search-row">
+        <input type="text" placeholder="ค้นหาชื่อพืชผลหรือพื้นที่..." value="${esc(state.marketSearch)}" oninput="onMarketSearch(this.value)">
+        <button class="btn btn-primary" onclick="openMarketForm()">+ ลงประกาศขาย</button>
+      </div>
+      ${state.marketError? `<div class="form-msg err" style="margin-bottom:18px;">${esc(state.marketError)}</div>` : ''}
+      <div class="market-grid">
+        ${state.marketLoading? `<div class="result-empty" style="grid-column:1/-1;">กำลังโหลด...</div>`
+          : filtered.length? filtered.map(marketCardHtml).join('')
+          : `<div class="result-empty" style="grid-column:1/-1;">ยังไม่มีประกาศขายผลผลิต ลองเป็นคนแรกที่ลงประกาศดูสิครับ</div>`}
+      </div>
+    </div>
+  </section>
+  `;
+}
+
+function marketCardHtml(l){
+  const isOwner = l.owner === state.currentUser;
+  return `
+  <div class="market-card">
+    <div class="market-card-head">
+      <h3>${esc(l.cropName)}</h3>
+      <span class="market-price">฿${Number(l.price||0).toLocaleString()}/${esc(l.unit||'หน่วย')}</span>
+    </div>
+    ${l.description? `<p class="market-desc">${esc(l.description)}</p>` : ''}
+    <p class="market-meta"><b>จำนวนที่มี:</b> ${esc(l.quantity||'-')}</p>
+    <p class="market-loc">📍 ${esc(l.location||'ไม่ระบุที่ตั้ง')}</p>
+    <div class="market-owner">ลงประกาศโดย @${esc(l.owner)} • ${esc(l.date)}</div>
+    <div class="market-actions">
+      ${l.phone? `<a class="call" href="tel:${esc(l.phone)}">📞 โทร ${esc(l.phone)}</a>` : ''}
+      ${isOwner? `<button class="danger" onclick="deleteMarketListing('${esc(l.id)}')">ลบประกาศ</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function onMarketSearch(v){ state.marketSearch=v; render(); }
+function openMarketForm(){ state.marketFormOpen=true; state.marketError=null; render(); }
+function closeMarketForm(){ state.marketFormOpen=false; state.marketError=null; render(); }
+
+function renderMarketFormModal(){
+  const el = document.createElement('div');
+  el.className='modal-backdrop';
+  el.onclick = (e)=>{ if(e.target===el) closeMarketForm(); };
+  el.innerHTML = `
+  <div class="modal">
+    <div class="modal-head">
+      <h3 style="margin:0;">ลงประกาศขายผลผลิต</h3>
+      <button class="modal-close" onclick="closeMarketForm()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="plot-form-field"><label>ชื่อพืชผล</label><input id="mf-crop" type="text" placeholder="เช่น มะม่วงน้ำดอกไม้"></div>
+      <div class="plot-form-field"><label>รายละเอียด</label><textarea id="mf-desc" placeholder="เช่น ปลอดสารพิษ เก็บสดใหม่ทุกวัน"></textarea></div>
+      <div class="plot-form-row">
+        <div class="plot-form-field"><label>ราคา (บาท)</label><input id="mf-price" type="number" min="0" step="0.01" placeholder="0"></div>
+        <div class="plot-form-field"><label>หน่วย</label><input id="mf-unit" type="text" placeholder="เช่น กก., ไร่, ลัง"></div>
+      </div>
+      <div class="plot-form-field"><label>จำนวนที่มี</label><input id="mf-qty" type="text" placeholder="เช่น 200 กก., ไม่จำกัด"></div>
+      <div class="plot-form-field"><label>ที่ตั้งฟาร์ม (จังหวัด/อำเภอ)</label><input id="mf-location" type="text" placeholder="เช่น จ.เชียงใหม่ อ.แม่ริม"></div>
+      <div class="plot-form-field"><label>เบอร์โทรติดต่อ</label><input id="mf-phone" type="tel" placeholder="เช่น 081-234-5678"></div>
+      ${state.marketError? `<div class="form-msg err">${esc(state.marketError)}</div>` : ''}
+      <button class="btn btn-primary btn-block" ${state.marketSaving?'disabled':''} onclick="saveMarketListing()">${state.marketSaving?'กำลังบันทึก...':'ลงประกาศ'}</button>
+    </div>
+  </div>`;
+  document.body.appendChild(el);
+}
+
+async function saveMarketListing(){
+  const cropName = document.getElementById('mf-crop').value.trim();
+  const description = document.getElementById('mf-desc').value.trim();
+  const price = document.getElementById('mf-price').value.trim();
+  const unit = document.getElementById('mf-unit').value.trim();
+  const quantity = document.getElementById('mf-qty').value.trim();
+  const location = document.getElementById('mf-location').value.trim();
+  const phone = document.getElementById('mf-phone').value.trim();
+  if(!cropName || !price || !location || !phone){ state.marketError='กรุณากรอกชื่อพืชผล ราคา ที่ตั้งฟาร์ม และเบอร์ติดต่อให้ครบ'; return render(); }
+  state.marketSaving=true; state.marketError=null; render();
+  try{
+    const listing = { cropName, description, price, unit: unit||'หน่วย', quantity, location, phone, date: new Date().toISOString().slice(0,10) };
+    const result = await sheetRequest({ action:'addMarketListing', username: state.currentUser, listing });
+    if(!result.success){ state.marketError = result.message||'ลงประกาศไม่สำเร็จ'; state.marketSaving=false; return render(); }
+    state.marketSaving=false;
+    state.marketFormOpen=false;
+    await loadMarket();
+  }catch(e){
+    console.error(e);
+    state.marketError = 'เชื่อมต่อ Google Sheet ไม่สำเร็จ: '+(e&&e.message?e.message:e);
+    state.marketSaving=false;
+    render();
+  }
+}
+
+async function deleteMarketListing(id){
+  if(!confirm('ต้องการลบประกาศนี้ใช่หรือไม่?')) return;
+  try{
+    const result = await sheetRequest({ action:'deleteMarketListing', username: state.currentUser, id });
+    if(!result.success){ state.marketError = result.message||'ลบไม่สำเร็จ'; }
+    await loadMarket();
+  }catch(e){ console.error(e); state.marketError='เชื่อมต่อ Google Sheet ไม่สำเร็จ: '+(e&&e.message?e.message:e); render(); }
+}
+
 function renderScanTab(main){
   main.innerHTML = `
   <section class="section">
@@ -1579,7 +1729,7 @@ function renderMascot(){
 
 /* ================= ACTIONS ================= */
 function goto(screen){ state.screen=screen; state.authMsg=null; render(); }
-function setTab(tab){ state.tab=tab; render(); if(tab==='plots') loadPlots(); }
+function setTab(tab){ state.tab=tab; render(); if(tab==='plots') loadPlots(); if(tab==='market') loadMarket(); }
 function openPlant(code){ state.activePlant=code; render(); }
 function closePlant(){ state.activePlant=null; render(); }
 function onLibSearch(v){ state.libSearch=v; state.aiSearchError=null; render(); }
