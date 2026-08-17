@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agriculture is easy — สมุดบันทึกเกษตรกร</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900;1,500;1,600&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --forest:#1F3A2E;
-    --forest-2:#28503D;
-    --soil:#4A3728;
-    --leaf:#6B8E4E;
-    --leaf-2:#557a3c;
-    --sun:#E3A83B;
-    --paper:#F3EFE3;
-    --paper-2:#EAE3D2;
-    --rust:#B5502E;
-    --ink:#2B2620;
-    --ink-soft:#5b5346;
-    --line:#c9bfa4;
+    --forest:#4F6B48;
+    --forest-2:#5E7A56;
+    --soil:#7A6248;
+    --leaf:#7FA06D;
+    --leaf-2:#5E7A56;
+    --sun:#DCC79A;
+    --paper:#F8F4EC;
+    --paper-2:#EFE6D6;
+    --rust:#B98868;
+    --ink:#463F35;
+    --ink-soft:#8A7F6D;
+    --line:#E2D8C4;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -30,7 +30,7 @@
     min-height:100vh;
   }
   ::selection{background:var(--sun);color:var(--forest);}
-  h1,h2,h3,.display{font-family:'Fraunces',serif;}
+  h1,h2,h3,.display{font-family:'Manrope',sans-serif;}
   .mono{font-family:'IBM Plex Mono',monospace;}
   a{color:inherit;}
   button{font-family:inherit;cursor:pointer;}
@@ -51,7 +51,7 @@
     max-width:1080px;margin:0 auto;padding:14px 24px;
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
-  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:1.25rem;letter-spacing:.2px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Manrope',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:.2px;}
   .brand-mark{width:34px;height:34px;flex:0 0 auto;}
   .nav-tabs{display:flex;gap:4px;background:rgba(0,0,0,.18);padding:4px;border-radius:10px;}
   .nav-tab{
@@ -71,14 +71,12 @@
 
   /* ---------- landing / auth ---------- */
   .hero{
-    background:
-      radial-gradient(circle at 15% 20%, rgba(227,168,59,.16), transparent 45%),
-      var(--forest);
+    background:var(--forest);
     color:var(--paper);
     padding:72px 24px 90px;
     position:relative;
     overflow:hidden;
-    border-bottom:6px dashed var(--soil);
+    border-bottom:1px solid var(--line);
   }
   .hero-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;}
   @media (max-width:820px){.hero-inner{grid-template-columns:1fr;}}
@@ -87,8 +85,8 @@
     font-size:.75rem;color:var(--sun);margin-bottom:14px;display:block;
   }
   .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.08;margin:0 0 18px;font-weight:700;}
-  .hero h1 em{font-style:italic;color:var(--sun);}
-  .hero p{font-size:1.05rem;color:#dbe2d4;max-width:46ch;line-height:1.6;margin:0 0 28px;}
+  .hero h1 em{font-style:normal;color:var(--sun);font-weight:800;}
+  .hero p{font-size:1.05rem;color:var(--paper-2);max-width:46ch;line-height:1.6;margin:0 0 28px;}
   .btn-row{display:flex;gap:12px;flex-wrap:wrap;}
   .btn{
     border:none;border-radius:9px;padding:13px 22px;font-weight:700;font-size:.95rem;
@@ -96,19 +94,19 @@
   }
   .btn:active{transform:translateY(1px);}
   .btn-primary{background:var(--sun);color:var(--forest);}
-  .btn-primary:hover{box-shadow:0 6px 0 0 #b8842a;transform:translateY(-2px);}
-  .btn-ghost{background:transparent;color:var(--paper);border:1.5px solid rgba(243,239,227,.5);}
-  .btn-ghost:hover{background:rgba(243,239,227,.1);}
+  .btn-primary:hover{box-shadow:0 4px 0 0 var(--soil);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--paper);border:1.5px solid rgba(248,244,236,.4);}
+  .btn-ghost:hover{background:rgba(248,244,236,.08);}
   .btn-block{width:100%;}
 
   .hero-card{
     background:var(--paper);color:var(--ink);border-radius:14px;
-    padding:26px;box-shadow:0 20px 40px rgba(0,0,0,.28);
+    padding:26px;box-shadow:0 12px 28px rgba(70,63,53,.12);
     border:1px solid var(--line);
   }
   .ring-badge{
     width:64px;height:64px;border-radius:50%;
-    background:conic-gradient(var(--leaf) 0turn, var(--sun) .5turn, var(--leaf) 1turn);
+    background:var(--leaf);
     display:flex;align-items:center;justify-content:center;margin-bottom:14px;
   }
   .ring-badge-inner{width:48px;height:48px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
@@ -169,8 +167,8 @@
   }
   .plant-code{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--sun);letter-spacing:.08em;}
   .plant-emoji{font-size:2.1rem;margin:6px 0 2px;}
-  .plant-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;}
-  .plant-name-en{font-size:.75rem;color:#c7d2bb;font-style:italic;}
+  .plant-name{font-family:'Manrope',sans-serif;font-weight:700;font-size:1.15rem;}
+  .plant-name-en{font-size:.75rem;color:var(--paper-2);font-style:italic;}
   .plant-body{padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:8px;}
   .plant-tag{display:inline-block;font-size:.72rem;background:var(--paper-2);color:var(--soil);padding:3px 9px;border-radius:12px;width:fit-content;}
   .plant-body p{margin:0;font-size:.85rem;color:var(--ink-soft);line-height:1.5;}
@@ -182,7 +180,7 @@
   }
   .modal{
     background:var(--paper);border-radius:16px;max-width:560px;width:100%;
-    max-height:86vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.35);
+    max-height:86vh;overflow-y:auto;box-shadow:0 16px 36px rgba(70,63,53,.16);
   }
   .modal-head{
     background:var(--forest);color:var(--paper);padding:22px 24px;position:sticky;top:0;
@@ -197,7 +195,7 @@
   }
   .care-list{margin:0;padding-left:18px;color:var(--ink-soft);font-size:.9rem;line-height:1.7;}
   .disease-card{border:1px solid var(--line);border-left:4px solid var(--rust);border-radius:8px;padding:12px 14px;margin-bottom:10px;background:#fff;}
-  .disease-card h5{margin:0 0 4px;font-size:.95rem;font-family:'Fraunces',serif;}
+  .disease-card h5{margin:0 0 4px;font-size:.95rem;font-family:'Manrope',sans-serif;}
   .disease-card p{margin:2px 0;font-size:.83rem;color:var(--ink-soft);}
   .disease-card p b{color:var(--ink);}
 
@@ -205,7 +203,7 @@
   .weather-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:24px;}
   .weather-now{display:flex;align-items:center;gap:14px;}
   .weather-now-icon{font-size:2.4rem;}
-  .weather-now-temp{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;}
+  .weather-now-temp{font-family:'Manrope',sans-serif;font-size:1.6rem;font-weight:700;}
   .weather-now-desc{font-size:.85rem;color:var(--ink-soft);}
   .weather-now-meta{margin-left:auto;text-align:right;font-size:.78rem;color:var(--ink-soft);}
   .weather-days{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px;border-top:1px solid var(--line);padding-top:14px;}
@@ -244,7 +242,7 @@
   .plot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;}
   .plot-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;}
   .plot-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
-  .plot-card-head h3{margin:0;font-size:1.1rem;font-family:'Fraunces',serif;}
+  .plot-card-head h3{margin:0;font-size:1.1rem;font-family:'Manrope',sans-serif;}
   .plot-status{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:12px;white-space:nowrap;}
   .plot-status.growing{background:#e7efdc;color:var(--leaf-2);}
   .plot-status.harvest-soon{background:#fdf3e4;color:#a3721f;}
@@ -299,7 +297,7 @@
   .result-empty{color:var(--ink-soft);font-size:.9rem;text-align:center;padding:40px 10px;}
   .result-tag{display:inline-block;background:var(--leaf);color:#fff;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:12px;margin-bottom:10px;}
   .result-tag.warn{background:var(--rust);}
-  .result-title{font-family:'Fraunces',serif;font-size:1.3rem;margin:0 0 4px;}
+  .result-title{font-family:'Manrope',sans-serif;font-size:1.3rem;margin:0 0 4px;}
   .result-conf{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--ink-soft);margin-bottom:16px;}
   .result-section{margin-bottom:14px;}
   .result-section h5{margin:0 0 4px;font-size:.82rem;color:var(--soil);font-weight:700;}
@@ -308,7 +306,7 @@
   /* ---------- mascot chat ---------- */
   .mascot-btn{
     position:fixed;right:22px;bottom:22px;width:64px;height:64px;border-radius:50%;
-    background:var(--sun);border:3px solid var(--forest);box-shadow:0 10px 24px rgba(0,0,0,.25);
+    background:var(--sun);border:2px solid var(--forest);box-shadow:0 6px 18px rgba(70,63,53,.18);
     display:flex;align-items:center;justify-content:center;font-size:1.7rem;z-index:70;
     animation:bob 3.2s ease-in-out infinite;overflow:visible;
   }
@@ -347,11 +345,11 @@
   .chat-panel{
     position:fixed;right:22px;bottom:98px;width:340px;max-width:90vw;height:460px;max-height:70vh;
     background:var(--paper);border:1px solid var(--line);border-radius:16px;
-    box-shadow:0 20px 50px rgba(0,0,0,.3);display:flex;flex-direction:column;z-index:70;overflow:hidden;
+    box-shadow:0 14px 32px rgba(70,63,53,.18);display:flex;flex-direction:column;z-index:70;overflow:hidden;
   }
   .chat-head{background:var(--forest);color:var(--paper);padding:14px 16px;display:flex;align-items:center;gap:10px;}
-  .chat-head .name{font-family:'Fraunces',serif;font-weight:700;}
-  .chat-head .role{font-size:.7rem;color:#c7d2bb;}
+  .chat-head .name{font-family:'Manrope',sans-serif;font-weight:700;}
+  .chat-head .role{font-size:.7rem;color:var(--paper-2);}
   .chat-close{margin-left:auto;background:none;border:none;color:var(--paper);font-size:1.2rem;}
   .chat-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
   .msg{max-width:82%;padding:9px 12px;border-radius:12px;font-size:.86rem;line-height:1.5;}
@@ -364,7 +362,7 @@
   }
   .chat-send{background:var(--leaf);color:#fff;border:none;border-radius:50%;width:36px;height:36px;flex:0 0 auto;font-size:1rem;}
 
-  footer{background:var(--forest);color:#c7d2bb;text-align:center;padding:22px;font-size:.78rem;}
+  footer{background:var(--forest);color:var(--paper-2);text-align:center;padding:22px;font-size:.78rem;}
   .disclaimer{
     background:#fdf3e4;border:1px solid #eccf9b;color:#7a5716;border-radius:10px;
     padding:10px 14px;font-size:.78rem;margin-top:16px;line-height:1.5;
@@ -766,9 +764,9 @@ function brandMarkHtml(){
 }
 function leafSvg(size){
   return `<svg class="brand-mark" width="${size}" height="${size}" viewBox="0 0 40 40" fill="none">
-    <circle cx="20" cy="20" r="19" fill="#E3A83B"/>
-    <path d="M20 30C12 30 8 24 9 14C19 13 27 17 28 25C28.6 29 24 30 20 30Z" fill="#28503D"/>
-    <path d="M11 15C17 17 22 21 24 27" stroke="#F3EFE3" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="20" cy="20" r="19" fill="#DCC79A"/>
+    <path d="M20 30C12 30 8 24 9 14C19 13 27 17 28 25C28.6 29 24 30 20 30Z" fill="#4F6B48"/>
+    <path d="M11 15C17 17 22 21 24 27" stroke="#F8F4EC" stroke-width="1.4" stroke-linecap="round"/>
   </svg>`;
 }
 function radishSvg(size){
@@ -776,9 +774,9 @@ function radishSvg(size){
   return `<svg class="radish-mascot" width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" aria-hidden="true">
     <ellipse cx="32" cy="58" rx="5" ry="3" fill="#000" opacity=".08"/>
     <g class="radish-leaves">
-      <path d="M22 12C22 8 27 4 32 4C37 4 42 8 42 12L38 16H26L22 12Z" fill="#6B8E4E"/>
-      <path d="M27 5C25 8 25 12 27 15" stroke="#4A6B36" stroke-width="1.3" stroke-linecap="round"/>
-      <path d="M37 5C39 8 39 12 37 15" stroke="#4A6B36" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M22 12C22 8 27 4 32 4C37 4 42 8 42 12L38 16H26L22 12Z" fill="#7FA06D"/>
+      <path d="M27 5C25 8 25 12 27 15" stroke="#5E7A56" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M37 5C39 8 39 12 37 15" stroke="#5E7A56" stroke-width="1.3" stroke-linecap="round"/>
     </g>
     <path d="M20 20C20 15 25 13 32 13C39 13 44 15 44 20C44 36 40 52 32 56C24 52 20 36 20 20Z" fill="#FDFBF5" stroke="#D8CFB6" stroke-width="1.2"/>
     <path d="M32 52C31 53.5 30.5 55 31 56.5" stroke="#C9BFA4" stroke-width="1.3" stroke-linecap="round"/>
@@ -874,7 +872,7 @@ function renderApp(root){
 
 function renderHomeTab(main){
   main.innerHTML = `
-  <section class="hero" style="padding:48px 24px;border-bottom:6px dashed var(--soil);">
+  <section class="hero" style="padding:48px 24px;border-bottom:1px solid var(--line);">
     <div class="hero-inner" style="grid-template-columns:1fr;">
       <div>
         <span class="eyebrow">ยินดีต้อนรับ @${esc(state.currentUser)}</span>
