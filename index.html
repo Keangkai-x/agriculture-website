@@ -1701,18 +1701,20 @@ function doLogout(){
   render();
 }
 
-function onScanFile(evt){
+async function onScanFile(evt){
   const file = evt.target.files[0];
   if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ()=>{
-    const dataUrl = reader.result;
+  try{
+    // ย่อขนาดรูปก่อนเก็บไว้ กันไฟล์ต้นฉบับจากกล้องใหญ่เกินไปจนส่งไปวิเคราะห์ไม่สำเร็จ
+    const dataUrl = await resizeImageFile(file, 900);
     const base64 = dataUrl.split(',')[1];
-    state.scanImage = {dataUrl, base64, mediaType:file.type||'image/jpeg'};
+    state.scanImage = {dataUrl, base64, mediaType:'image/jpeg'};
     state.scanResult=null; state.scanError=null;
-    render();
-  };
-  reader.readAsDataURL(file);
+  }catch(e){
+    console.error(e);
+    state.scanError = 'ไม่สามารถอ่านไฟล์ภาพนี้ได้: '+(e&&e.message?e.message:e);
+  }
+  render();
 }
 function clearScan(){ state.scanImage=null; state.scanResult=null; state.scanError=null; render(); }
 
