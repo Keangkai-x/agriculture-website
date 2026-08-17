@@ -1,14 +1,15 @@
 // Serverless Function: ทำหน้าที่เป็นตัวกลางระหว่างเว็บกับ Google Gemini API (ฟรี ไม่ต้องผูกบัตรเครดิต)
 // คีย์ API จะถูกอ่านจาก Environment Variable บน Vercel เท่านั้น ไม่ปรากฏในโค้ดฝั่งเว็บเลย
 // ฟังก์ชันนี้แปลงรูปแบบคำขอ/คำตอบให้เหมือนของเดิม (Anthropic-style) เพื่อไม่ต้องแก้โค้ดฝั่ง index.html เลย
-// รองรับการลองรุ่นสำรองอัตโนมัติ ถ้ารุ่นหลักไม่ว่าง (high demand) จะลองรุ่นถัดไปในลิสต์ทันที
+// รองรับการลองรุ่นสำรองอัตโนมัติ ถ้ารุ่นหลักไม่ว่างหรือถูกปลดแล้ว จะลองรุ่นถัดไปในลิสต์ทันที
 
-// เรียงจากรุ่นที่เบา/โควตาเยอะ ไปหารุ่นสำรอง เพื่อลดโอกาสเจอ "high demand"
+// Google เปลี่ยนรุ่นบ่อยมาก จึงใส่ตัวชี้ "-latest" ไว้เป็นหลักเพื่อให้ตามรุ่นปัจจุบันเสมอ
+// พร้อมรุ่นเฉพาะเจาะจงเป็นรุ่นสำรอง (ตามที่ Google แนะนำในข้อความ error ล่าสุด)
 const MODEL_FALLBACKS = [
-  'gemini-2.5-flash-lite',
   'gemini-flash-lite-latest',
-  'gemini-2.0-flash-lite',
-  'gemini-flash-latest'
+  'gemini-3.5-flash-lite',
+  'gemini-flash-latest',
+  'gemini-3-flash'
 ];
 
 async function callGemini(model, apiKey, body) {
@@ -63,20 +64,22 @@ export default async function handler(req, res) {
     }
 
     let lastError = null;
+    const triedModels = [];
     for (const model of MODEL_FALLBACKS) {
       const result = await callGemini(model, apiKey, body);
+      triedModels.push(model);
       if (result.ok) {
         const text = (result.data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('\n');
         return res.status(200).json({ content: [{ type: 'text', text }], modelUsed: model });
       }
       lastError = result;
-      // ถ้าเป็นปัญหาโควตา/ความหนาแน่นสูง (429/503) ให้ลองรุ่นถัดไปทันที
-      // ถ้าเป็น error อื่น (เช่น คีย์ผิด, request ผิดรูปแบบ) ให้หยุดแล้วแจ้ง error ทันทีไม่ต้องลองรุ่นอื่นต่อ
-      if (result.status !== 429 && result.status !== 503) break;
+      // 401/403 คือปัญหาที่ตัวคีย์ API เอง จะ error เหมือนกันทุกรุ่น ไม่มีประโยชน์ต้องลองรุ่นอื่นต่อ
+      if (result.status === 401 || result.status === 403) break;
+      // เคสอื่นๆ ทั้งหมด (429/503 คนใช้เยอะ, 400/404 รุ่นถูกปลดหรือไม่พบ) ให้ลองรุ่นถัดไปในลิสต์ต่อ
     }
 
     return res.status(lastError.status).json({
-      error: (lastError.data.error?.message || 'Gemini API error') + ` (ลองแล้ว ${MODEL_FALLBACKS.length} รุ่นสำรอง)`
+      error: (lastError.data.error?.message || 'Gemini API error') + ` (ลองแล้ว ${triedModels.length}/${MODEL_FALLBACKS.length} รุ่น: ${triedModels.join(', ')})`
     });
   } catch (err) {
     return res.status(500).json({ error: err.message || 'Server error' });
