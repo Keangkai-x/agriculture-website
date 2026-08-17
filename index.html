@@ -1604,7 +1604,7 @@ async function searchPlantAI(term){
     state.activePlant = code;
   }catch(e){
     console.error(e);
-    state.aiSearchError = 'ค้นหาข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+    state.aiSearchError = 'เชื่อมต่อ AI ไม่สำเร็จ: '+(e&&e.message?e.message:e);
     state.aiSearchBusy=false;
   }
   render();
@@ -1727,7 +1727,7 @@ async function analyzePlant(){
     state.scanResult = parsed;
   }catch(e){
     console.error(e);
-    state.scanError = 'ขออภัยค่ะ ไม่สามารถวิเคราะห์ภาพได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง';
+    state.scanError = 'เชื่อมต่อ AI ไม่สำเร็จ: '+(e&&e.message?e.message:e);
   }
   state.scanBusy=false;
   render();
@@ -1747,7 +1747,7 @@ async function sendChat(){
     state.chatLog.push({role:'bot', text: reply || 'ขออภัยค่ะ น้อง Agri ตอบไม่ได้ในตอนนี้ ลองใหม่อีกครั้งนะคะ'});
   }catch(e){
     console.error(e);
-    state.chatLog.push({role:'bot', text:'ขออภัยค่ะ ตอนนี้น้อง Agri เชื่อมต่อไม่ได้ ลองใหม่อีกครั้งนะคะ 🌱'});
+    state.chatLog.push({role:'bot', text:'เชื่อมต่อ AI ไม่สำเร็จ: '+(e&&e.message?e.message:e)});
   }
   state.chatBusy=false;
   input && (input.value='');
